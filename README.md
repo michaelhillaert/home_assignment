@@ -37,4 +37,12 @@ Make sure to deploy the output of `npm run build`
 
 ## Styling
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+For styling the choice was to go with Material UI or Chakra UI. While Chakra UI specialised on ease-of-use and is ideal for small projects and prototyping, Material UI is better suited for large applications with more complex components.
+
+For this application I opted to go with Material UI (MUI) to demonstrate how it can be intergrated into Remix.
+
+MUI supports both emotion and Styled Components as styling engines. Since there are issues with Styled Components in SSR we will use emotion.
+
+https://mui.com/material-ui/getting-started/installation/#with-styled-components
+
+This version includes `@mui/material` and its peer dependencies, including [Emotion](https://emotion.sh/docs/introduction), the default style engine in Material UI v6.

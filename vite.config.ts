@@ -1,3 +1,5 @@
+// We don`t use vite for now because there are issues with MUI
+// If using vite remix.config can be removed and the npm script 'vite' renamed to 'dev'
 import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
