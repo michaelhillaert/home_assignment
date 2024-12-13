@@ -1,4 +1,4 @@
-import { MetaFunction } from '@remix-run/node'
+import { MetaFunction } from '@vercel/remix'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid2'
 import { Typography } from '@mui/material'

@@ -9,7 +9,7 @@ import {
   isRouteErrorResponse,
   useLoaderData,
 } from '@remix-run/react'
-import type { LinksFunction } from '@remix-run/node'
+import type { LinksFunction } from '@vercel/remix'
 import { withEmotionCache, EmotionCache } from '@emotion/react'
 import {
   Container,
@@ -22,6 +22,9 @@ import { Header } from './components/Header'
 import { FakeStoreApiProvider } from './context/FakeStoreApiContext'
 import { CartProvider } from './context/CartContext'
 import { getCategories } from './helpers/category'
+
+// All routes will be rendered using Edge runtime
+export const config = { runtime: 'edge' }
 
 // Links
 export const links: LinksFunction = () => [

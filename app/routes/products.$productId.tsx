@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useLoaderData, MetaFunction } from '@remix-run/react'
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@vercel/remix'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid2'
