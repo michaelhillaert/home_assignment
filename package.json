@@ -5,7 +5,7 @@
   "scripts": {
     "build": "remix vite:build",
     "vite": "remix vite:dev",
-    "dev": "remix dev",
+    "dev": "remix dev --manual",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
@@ -15,11 +15,14 @@
     "@emotion/react": "^11.14.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.0",
+    "@mui/base": "^5.0.0-beta.66",
+    "@mui/icons-material": "^6.1.10",
     "@mui/material": "^6.1.10",
     "@remix-run/node": "^2.15.0",
     "@remix-run/react": "^2.15.0",
     "@remix-run/serve": "^2.15.0",
     "isbot": "^4.1.0",
+    "notistack": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

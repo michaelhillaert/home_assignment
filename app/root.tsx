@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext } from 'react'
 import {
   Links,
   Meta,
@@ -7,50 +7,63 @@ import {
   ScrollRestoration,
   useRouteError,
   isRouteErrorResponse,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
-import { withEmotionCache } from "@emotion/react";
-import { unstable_useEnhancedEffect as useEnhancedEffect } from "@mui/material";
-import theme from "./theme";
-import ClientStyleContext from "./context/ClientStyleContext";
-import Layout from "./components/Layout";
+  useLoaderData,
+} from '@remix-run/react'
+import type { LinksFunction } from '@remix-run/node'
+import { withEmotionCache, EmotionCache } from '@emotion/react'
+import {
+  Container,
+  unstable_useEnhancedEffect as useEnhancedEffect,
+} from '@mui/material'
+import theme from './helpers/theme'
+import ClientStyleContext from './context/ClientStyleContext'
+import { Footer } from './components/Footer'
+import { Header } from './components/Header'
+import { FakeStoreApiProvider } from './context/FakeStoreApiContext'
+import { CartProvider } from './context/CartContext'
+import { getCategories } from './helpers/category'
 
+// Links
 export const links: LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
   {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'anonymous',
   },
   {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
   },
-];
+]
+
+// Loader
+export const loader = async () => {
+  const categories = await getCategories()
+
+  return {
+    categories,
+  }
+}
 
 interface DocumentProps {
-  children: React.ReactNode;
-  title?: string;
+  children: React.ReactNode
+  title?: string
 }
 
 const Document = withEmotionCache(
-  ({ children, title }: DocumentProps, emotionCache) => {
-    const clientStyleData = useContext(ClientStyleContext);
+  ({ children, title }: DocumentProps, emotionCache: EmotionCache) => {
+    const clientStyleData = useContext(ClientStyleContext)
 
     // Only executed on client
     useEnhancedEffect(() => {
       // re-link sheet container
-      emotionCache.sheet.container = document.head;
-      // re-inject tags
-      const tags = emotionCache.sheet.tags;
-      emotionCache.sheet.flush();
-      tags.forEach((tag) => {
-        (emotionCache.sheet as any)._insertTag(tag);
-      });
+      emotionCache.sheet.container = document.head
+
       // reset cache to reapply global styles
-      clientStyleData.reset();
+      clientStyleData.reset()
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [])
 
     return (
       <html lang="en">
@@ -82,9 +95,25 @@ const Document = withEmotionCache(
           <Scripts />
         </body>
       </html>
-    );
+    )
   }
-);
+)
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { categories } = useLoaderData<typeof loader>()
+
+  return (
+    <Container maxWidth="lg">
+      <FakeStoreApiProvider categories={categories}>
+        <CartProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </CartProvider>
+      </FakeStoreApiProvider>
+    </Container>
+  )
+}
 
 // https://remix.run/docs/en/main/route/component
 // https://remix.run/docs/en/main/file-conventions/routes
@@ -95,15 +124,15 @@ export default function App() {
         <Outlet />
       </Layout>
     </Document>
-  );
+  )
 }
 
 // https://remix.run/docs/en/main/route/error-boundary
 export function ErrorBoundary() {
-  const error = useRouteError();
+  const error = useRouteError()
 
   if (isRouteErrorResponse(error)) {
-    let message;
+    let message
     switch (error.status) {
       case 401:
         message = (
@@ -111,16 +140,16 @@ export function ErrorBoundary() {
             Oops! Looks like you tried to visit a page that you do not have
             access to.
           </p>
-        );
-        break;
+        )
+        break
       case 404:
         message = (
           <p>Oops! Looks like you tried to visit a page that does not exist.</p>
-        );
-        break;
+        )
+        break
 
       default:
-        throw new Error(error.data || error.statusText);
+        throw new Error(error.data || error.statusText)
     }
 
     return (
@@ -132,11 +161,11 @@ export function ErrorBoundary() {
           {message}
         </Layout>
       </Document>
-    );
+    )
   }
 
   if (error instanceof Error) {
-    console.error(error);
+    console.error(error)
     return (
       <Document title="Error!">
         <Layout>
@@ -151,8 +180,8 @@ export function ErrorBoundary() {
           </div>
         </Layout>
       </Document>
-    );
+    )
   }
 
-  return <h1>Unknown Error</h1>;
+  return <h1>Unknown Error</h1>
 }
