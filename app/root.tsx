@@ -23,9 +23,6 @@ import { FakeStoreApiProvider } from './context/FakeStoreApiContext'
 import { CartProvider } from './context/CartContext'
 import { getCategories } from './helpers/category'
 
-// All routes will be rendered using Edge runtime
-export const config = { runtime: 'edge' }
-
 // Links
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
